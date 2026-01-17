@@ -48,3 +48,102 @@
   border-color: #646cff;
   box-shadow: 0 4px 8px rgba(100, 108, 255, 0.2);
 }
+/* Componente TrendIndicator */
+.trend-indicator {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+.trend-indicator.up {
+  color: #ef4444; /* Vermelho para preço subindo */
+}
+
+.trend-indicator.down {
+  color: #22c55e; /* Verde para preço caindo */
+}
+
+.trend-indicator.stable {
+  color: #94a3b8;
+}
+
+/* Badge de Oportunidade */
+.opportunity-badge {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background: #f59e0b; /* Ambar/Laranja */
+  color: white;
+  padding: 4px 8px;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  z-index: 10;
+  animation: popIn 0.3s ease-out;
+}
+
+@keyframes popIn {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+/* Layout Principal com Sidebar */
+.app-container {
+  display: flex;
+  gap: 20px;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+/* Sidebar de Filtros */
+.filters-sidebar {
+  width: 200px;
+  flex-shrink: 0;
+  background: #1e1e1e;
+  padding: 20px;
+  border-radius: 8px;
+  height: fit-content;
+}
+
+.filter-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.filter-group h3 {
+  font-size: 1rem;
+  margin-bottom: 10px;
+  color: #e2e8f0;
+  border-bottom: 1px solid #333;
+  padding-bottom: 5px;
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #cbd5e1;
+}
+
+.main-content {
+  flex-grow: 1;
+}
+
+/* Ajustes responsivos */
+@media (max-width: 768px) {
+  .app-container {
+    flex-direction: column;
+  }
+  .filters-sidebar {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+}

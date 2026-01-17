@@ -2,6 +2,8 @@ import { useState, useEffect, useMemo } from 'react'
 import { supabase } from './lib/supabase'
 import ProductCard from './components/ProductCard'
 import HistoryModal from './components/HistoryModal'
+import Filters from './components/Filters'
+import { calculateTrend, isLowestPrice, categorizeProduct } from './utils/priceAnalytics'
 import { LineChart } from 'lucide-react'
 import './App.css'
 
@@ -10,6 +12,10 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedProductGroup, setSelectedProductGroup] = useState(null)
+
+  // States para Filtros
+  const [selectedStores, setSelectedStores] = useState(['Kabum', 'Pichau', 'Terabyte'])
+  const [selectedCategories, setSelectedCategories] = useState(['GPU', 'CPU', 'RAM', 'Storage', 'PSU', 'Outros']) // Inicia com todos marcados? Ou vazio significa todos? Vamos iniciar com todos para facilitar.
 
   useEffect(() => {
     fetchProducts()
@@ -35,8 +41,8 @@ function App() {
     }
   }
 
-  // Agrupar produtos duplicados (mesmo nome e loja)
-  const groupedProducts = useMemo(() => {
+  // Agrupar produtos duplicados (mesmo nome e loja) E Calcular Analytics
+  const processedProducts = useMemo(() => {
     const groups = {}
 
     rawData.forEach(item => {
@@ -45,24 +51,36 @@ function App() {
 
       if (!groups[key]) {
         groups[key] = {
-          product: item, // Mantém o item mais recente (devido ao sort do SQL ou timestamp)
+          product: item, // Mantém o item mais recente
           history: []
         }
       }
       groups[key].history.push(item)
     })
 
-    // Retornar array dos produtos mais recentes
-    return Object.values(groups).map(g => ({
-      ...g.product,
-      fullHistory: g.history
-    }))
+    // Retornar array dos produtos mais recentes com campos extras
+    return Object.values(groups).map(g => {
+      const history = g.history;
+      const currentPrice = g.product.price;
+
+      return {
+        ...g.product,
+        fullHistory: history,
+        trend: calculateTrend(currentPrice, history),
+        isLowestPrice: isLowestPrice(currentPrice, history),
+        computedCategory: categorizeProduct(g.product.product_name)
+      }
+    })
   }, [rawData])
 
 
-  const filteredProducts = groupedProducts.filter(item =>
-    item.product_name.toLowerCase().includes(searchTerm.toLowerCase())
-  )
+  const filteredProducts = processedProducts.filter(item => {
+    const matchesSearch = item.product_name.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesStore = selectedStores.length === 0 || selectedStores.includes(item.store);
+    const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(item.computedCategory);
+
+    return matchesSearch && matchesStore && matchesCategory;
+  })
 
   return (
     <>
@@ -79,28 +97,40 @@ function App() {
         />
       </div>
 
-      {loading ? (
-        <p>Carregando ofertas...</p>
-      ) : (
-        <div className="products-grid">
-          {filteredProducts.length > 0 ? (
-            filteredProducts.map((product) => (
-              <div key={product.id} style={{ position: 'relative' }}>
-                <ProductCard product={product} />
-                <button
-                  className="history-btn"
-                  onClick={() => setSelectedProductGroup({ product, history: product.fullHistory })}
-                  title="Ver Histórico"
-                >
-                  <LineChart size={20} />
-                </button>
-              </div>
-            ))
+      <div className="app-container">
+
+        <Filters
+          selectedStores={selectedStores}
+          setSelectedStores={setSelectedStores}
+          selectedCategories={selectedCategories}
+          setSelectedCategories={setSelectedCategories}
+        />
+
+        <div className="main-content">
+          {loading ? (
+            <p>Carregando ofertas...</p>
           ) : (
-            <p>Nenhum produto encontrado.</p>
+            <div className="products-grid">
+              {filteredProducts.length > 0 ? (
+                filteredProducts.map((product) => (
+                  <div key={`${product.store}-${product.product_name}`} style={{ position: 'relative' }}>
+                    <ProductCard product={product} />
+                    <button
+                      className="history-btn"
+                      onClick={() => setSelectedProductGroup({ product, history: product.fullHistory })}
+                      title="Ver Histórico"
+                    >
+                      <LineChart size={20} />
+                    </button>
+                  </div>
+                ))
+              ) : (
+                <p>Nenhum produto encontrado.</p>
+              )}
+            </div>
           )}
         </div>
-      )}
+      </div>
 
       {selectedProductGroup && (
         <HistoryModal
