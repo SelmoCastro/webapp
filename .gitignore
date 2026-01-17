@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+backend/venv/
+*.env
+.env
+.env.local
+
+# Node/Frontend
+node_modules/
+frontend/dist/
+frontend/.env
+
+# IDE
+.vscode/
+.idea/
+
+# Sistema
+.DS_Store
+dataset_multiloja_poc.json

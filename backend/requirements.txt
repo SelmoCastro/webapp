@@ -1,0 +1,7 @@
+requests
+beautifulsoup4
+fake-useragent
+playwright
+supabase
+python-dotenv
+
