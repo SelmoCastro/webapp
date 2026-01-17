@@ -12,8 +12,8 @@ def get_kabum_prices(query="RTX 4060"):
     products = []
     
     with sync_playwright() as p:
-        ua = UserAgent()
-        user_agent_str = ua.random
+        # Usar um User-Agent Desktop Fixo e Moderno para garantir o layout correto
+        user_agent_str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
         
         browser = p.chromium.launch(
             headless=True,
