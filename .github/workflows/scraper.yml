@@ -2,8 +2,8 @@ name: Daily Price Scraper
 
 on:
   schedule:
-    # Rodar todo dia às 09:00 UTC (06:00 Brasil)
-    - cron: '0 9 * * *'
+    # Rodar a cada 3 horas
+    - cron: '0 */3 * * *'
   workflow_dispatch: # Permite rodar manualmente na aba Actions
 
 jobs:
