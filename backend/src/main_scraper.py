@@ -59,10 +59,36 @@ def run_all_scrapers(query="RTX 4060"):
 
 
 if __name__ == "__main__":
-    data = run_all_scrapers("RTX 4060")
+    products_to_search = [
+        "RTX 4060",
+        "RTX 4070",
+        "RX 7600",
+        "Ryzen 5 5600",
+        "Ryzen 7 5700X3D",
+        "Core i5 13400F",
+        "Memória RAM 16GB DDR4",
+        "Memória RAM 16GB DDR5",
+        "SSD NVMe 1TB",
+        "Fonte 650W"
+    ]
+
+    all_results = []
+    
+    print(f"=== Iniciando Coleta de {len(products_to_search)} Termos ===")
+
+    for product in products_to_search:
+        print(f"\n>>> Buscando: {product}")
+        results = run_all_scrapers(product)
+        all_results.extend(results)
+        
+        # Delay extra entre produtos para não sobrecarregar
+        delay = random.uniform(5, 10)
+        print(f"Sleeping {delay:.2f}s before next product...")
+        time.sleep(delay)
     
     # Opcional: Salvar em arquivo para debug
     with open("dataset_multiloja_poc.json", "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=4, ensure_ascii=False)
+        json.dump(all_results, f, indent=4, ensure_ascii=False)
     
+    print(f"\nColeta Finalizada. Total acumulado: {len(all_results)} itens.")
     print("Dados salvos em dataset_multiloja_poc.json")
