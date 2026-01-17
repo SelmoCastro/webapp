@@ -36,10 +36,22 @@ export function isLowestPrice(currentPrice, history) {
 
 export function categorizeProduct(productName) {
     const name = productName.toLowerCase();
-    if (name.includes('rtx') || name.includes('rx') || name.includes('geforce') || name.includes('radeon') || name.includes('placa de vídeo')) return 'GPU';
+
+    // Prioridade para Placa-mãe (Para não cair em RAM DDR4)
+    if (name.includes('placa mãe') || name.includes('placa-mãe') || name.includes('b550') || name.includes('b450') || name.includes('a520') || name.includes('motherboard') || name.includes('z690') || name.includes('z790')) return 'Motherboard';
+
+    // Categorias padrão
+    if (name.includes('rtx') || name.includes('rx 6') || name.includes('rx 7') || name.includes('geforce') || name.includes('radeon') || name.includes('placa de vídeo')) return 'GPU';
     if (name.includes('ryzen') || name.includes('core i') || name.includes('intel') || name.includes('processador')) return 'CPU';
     if (name.includes('ddr4') || name.includes('ddr5') || name.includes('memória')) return 'RAM';
     if (name.includes('ssd') || name.includes('nvme') || name.includes('hd') || name.includes('armazenamento')) return 'Storage';
-    if (name.includes('fonte') || name.includes('w')) return 'PSU'; // Fontes geralmente tem Watts
+    if (name.includes('fonte') || name.includes('w')) return 'PSU';
     return 'Outros';
+}
+
+export function isKit(productName) {
+    const name = productName.toLowerCase();
+    // Procura por padrões como: 2x, 2 x, 4x, kit
+    if (name.includes('kit') || name.includes('2x') || name.includes('2 x') || name.includes('4x') || name.includes('4 x')) return true;
+    return false;
 }

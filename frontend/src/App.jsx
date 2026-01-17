@@ -3,7 +3,7 @@ import { supabase } from './lib/supabase'
 import ProductCard from './components/ProductCard'
 import HistoryModal from './components/HistoryModal'
 import Filters from './components/Filters'
-import { calculateTrend, isLowestPrice, categorizeProduct } from './utils/priceAnalytics'
+import { calculateTrend, isLowestPrice, categorizeProduct, isKit } from './utils/priceAnalytics'
 import { LineChart } from 'lucide-react'
 import './App.css'
 
@@ -15,7 +15,7 @@ function App() {
 
   // States para Filtros
   const [selectedStores, setSelectedStores] = useState(['Kabum', 'Pichau', 'Terabyte'])
-  const [selectedCategories, setSelectedCategories] = useState(['GPU', 'CPU', 'RAM', 'Storage', 'PSU', 'Outros']) // Inicia com todos marcados? Ou vazio significa todos? Vamos iniciar com todos para facilitar.
+  const [selectedCategories, setSelectedCategories] = useState(['GPU', 'CPU', 'RAM', 'Motherboard', 'Storage', 'PSU', 'Outros']) // Inicia com todos marcados? Ou vazio significa todos? Vamos iniciar com todos para facilitar.
 
   useEffect(() => {
     fetchProducts()

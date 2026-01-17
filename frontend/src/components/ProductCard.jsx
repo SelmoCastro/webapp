@@ -5,7 +5,7 @@ import './ProductCard.css';
 import TrendIndicator from './TrendIndicator';
 
 const ProductCard = ({ product }) => {
-    const { product_name, price, store, url, trend, isLowestPrice } = product;
+    const { product_name, price, store, url, trend, isLowestPrice, isKit } = product;
 
     // Formatar preço
     const formattedPrice = new Intl.NumberFormat('pt-BR', {
@@ -24,7 +24,10 @@ const ProductCard = ({ product }) => {
                 <span className={`store-tag ${store.toLowerCase()}`}>{store}</span>
             </div>
             <div className="card-body">
-                <h3 title={product_name}>{product_name}</h3>
+                <h3 title={product_name}>
+                    {product_name}
+                    {isKit && <span className="kit-badge" title="Kit com múltiplos itens">📦 Kit</span>}
+                </h3>
                 <div className="price-container">
                     <span className="price-label">À vista</span>
                     <span className="price-value">{formattedPrice}</span>

@@ -2,7 +2,7 @@ import React from 'react';
 
 const Filters = ({ selectedStores, setSelectedStores, selectedCategories, setSelectedCategories }) => {
     const stores = ['Kabum', 'Pichau', 'Terabyte'];
-    const categories = ['GPU', 'CPU', 'RAM', 'Storage', 'PSU', 'Outros'];
+    const categories = ['GPU', 'CPU', 'RAM', 'Motherboard', 'Storage', 'PSU', 'Outros'];
 
     const toggleStore = (store) => {
         if (selectedStores.includes(store)) {

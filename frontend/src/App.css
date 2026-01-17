@@ -48,6 +48,7 @@
   border-color: #646cff;
   box-shadow: 0 4px 8px rgba(100, 108, 255, 0.2);
 }
+
 /* Componente TrendIndicator */
 .trend-indicator {
   display: flex;
@@ -59,11 +60,13 @@
 }
 
 .trend-indicator.up {
-  color: #ef4444; /* Vermelho para preço subindo */
+  color: #ef4444;
+  /* Vermelho para preço subindo */
 }
 
 .trend-indicator.down {
-  color: #22c55e; /* Verde para preço caindo */
+  color: #22c55e;
+  /* Verde para preço caindo */
 }
 
 .trend-indicator.stable {
@@ -75,20 +78,38 @@
   position: absolute;
   top: -10px;
   right: -10px;
-  background: #f59e0b; /* Ambar/Laranja */
+  background: #f59e0b;
+  /* Ambar/Laranja */
   color: white;
   padding: 4px 8px;
   border-radius: 12px;
   font-size: 0.75rem;
   font-weight: bold;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
   z-index: 10;
   animation: popIn 0.3s ease-out;
 }
 
 @keyframes popIn {
-  from { transform: scale(0); }
-  to { transform: scale(1); }
+  from {
+    transform: scale(0);
+  }
+
+  to {
+    transform: scale(1);
+  }
+}
+
+/* Badge de Kit */
+.kit-badge {
+  display: inline-block;
+  background: #64748b;
+  color: white;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.7rem;
+  margin-left: 8px;
+  vertical-align: middle;
 }
 
 /* Layout Principal com Sidebar */
@@ -142,6 +163,7 @@
   .app-container {
     flex-direction: column;
   }
+
   .filters-sidebar {
     width: 100%;
     margin-bottom: 20px;
