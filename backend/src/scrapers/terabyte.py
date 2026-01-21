@@ -17,23 +17,48 @@ def get_terabyte_prices(query="RTX 4060"):
 
         browser = p.chromium.launch(
             headless=True,
-            args=["--disable-blink-features=AutomationControlled"]
+            args=[
+                "--disable-blink-features=AutomationControlled",
+                "--disable-dev-shm-usage",
+                "--no-sandbox",
+                "--disable-setuid-sandbox"
+            ]
         )
-        page = browser.new_page(user_agent=user_agent_str)
+        
+        context = browser.new_context(
+            user_agent=user_agent_str,
+            viewport={'width': 1920, 'height': 1080},
+            locale='pt-BR'
+        )
+        
+        # Injetar script para esconder webdriver
+        context.add_init_script("""
+            Object.defineProperty(navigator, 'webdriver', {
+                get: () => undefined
+            });
+        """)
+        
+        page = context.new_page()
         
         try:
-            page.goto(url, wait_until="domcontentloaded", timeout=60000)
+            # Delays mais humanizados
+            time.sleep(2)
+            page.goto(url, wait_until="networkidle", timeout=90000)
             
             print("Aguardando carregamento dos produtos...")
+            time.sleep(3)  # Delay adicional para JS carregar
+            
             try:
                 # Seletor baseado na inspeção
-                page.wait_for_selector('.product-item', timeout=15000)
+                page.wait_for_selector('.product-item', timeout=20000)
             except:
                 print("Timeout aguardando seletores de produto.")
 
-            # Scroll to load more items
-            page.evaluate("window.scrollTo(0, 1000)")
+            # Scroll mais humanizado
+            page.evaluate("window.scrollTo(0, 800)")
             time.sleep(1)
+            page.evaluate("window.scrollTo(0, 1600)")
+            time.sleep(2)
 
             # Get all product cards
             product_cards = page.locator('.product-item').all()

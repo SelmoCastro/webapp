@@ -15,27 +15,52 @@ def get_pichau_prices(query="RTX 4060"):
         # Usar um User-Agent Desktop Fixo e Moderno
         user_agent_str = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/121.0.0.0 Safari/537.36"
 
-        # Launch browser
+        # Launch browser com mais argumentos anti-detecção
         browser = p.chromium.launch(
             headless=True,
-            args=["--disable-blink-features=AutomationControlled"]
+            args=[
+                "--disable-blink-features=AutomationControlled",
+                "--disable-dev-shm-usage",
+                "--no-sandbox",
+                "--disable-setuid-sandbox"
+            ]
         )
-        page = browser.new_page(user_agent=user_agent_str)
+        
+        context = browser.new_context(
+            user_agent=user_agent_str,
+            viewport={'width': 1920, 'height': 1080},
+            locale='pt-BR'
+        )
+        
+        # Injetar script para esconder webdriver
+        context.add_init_script("""
+            Object.defineProperty(navigator, 'webdriver', {
+                get: () => undefined
+            });
+        """)
+        
+        page = context.new_page()
         
         try:
-            page.goto(url, wait_until="domcontentloaded", timeout=60000)
+            # Delays mais humanizados
+            time.sleep(2)
+            page.goto(url, wait_until="networkidle", timeout=90000)
             
             # Wait for products
             print("Aguardando carregamento dos produtos...")
+            time.sleep(3)  # Delay adicional para JS carregar
+            
             try:
-                # Wait based on inspection: main grid items usually have a specific pattern or just wait for 'h2' which is title
-                page.wait_for_selector('div[class*="MuiGrid-item"]', timeout=15000)
+                # Tentar diferentes seletores
+                page.wait_for_selector('div[class*="MuiGrid-item"], article, .product-card', timeout=20000)
             except:
                 print("Timeout aguardando seletores de produto.")
 
-            # Scroll to load more items if lazy loading
-            page.evaluate("window.scrollTo(0, 1000)")
+            # Scroll mais humanizado
+            page.evaluate("window.scrollTo(0, 800)")
             time.sleep(1)
+            page.evaluate("window.scrollTo(0, 1600)")
+            time.sleep(2)
 
             # Get all product link containers which are the cards
             # Based on inspection: a[href*="/"] inside main 
