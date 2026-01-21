@@ -83,6 +83,17 @@
   color: white;
 }
 
+.store-tag.magazine-luiza,
+.store-tag.magazineluiza {
+  background: linear-gradient(135deg, #0086ff 0%, #0051cc 100%);
+  color: white;
+}
+
+.store-tag.americanas {
+  background: linear-gradient(135deg, #e31c1c 0%, #b71515 100%);
+  color: white;
+}
+
 .card-body {
   flex-grow: 1;
 }

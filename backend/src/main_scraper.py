@@ -6,6 +6,8 @@ from scrapers.pichau import get_pichau_prices
 from scrapers.terabyte import get_terabyte_prices
 from scrapers.mercadolivre import get_mercadolivre_prices
 from scrapers.amazon import get_amazon_prices
+from scrapers.magazineluiza import get_magazineluiza_prices
+from scrapers.americanas import get_americanas_prices
 from db import save_price_history
 
 def run_all_scrapers(query="RTX 4060"):
@@ -15,68 +17,90 @@ def run_all_scrapers(query="RTX 4060"):
     
     # 1. Kabum
     try:
-        print("\n[1/5] Executando Kabum...")
+        print("\n[1/7] Executando Kabum...")
         kabum_data = get_kabum_prices(query)
         results.extend(kabum_data)
         print(f"-> {len(kabum_data)} produtos encontrados.")
     except Exception as e:
         print(f"Erro no scraper Kabum: {e}")
 
-    # Delay aleatório
     delay = random.uniform(2, 5)
     print(f"Aguardando {delay:.2f}s...")
     time.sleep(delay)
 
     # 2. Pichau
     try:
-        print("\n[2/5] Executando Pichau...")
+        print("\n[2/7] Executando Pichau...")
         pichau_data = get_pichau_prices(query)
         results.extend(pichau_data)
         print(f"-> {len(pichau_data)} produtos encontrados.")
     except Exception as e:
         print(f"Erro no scraper Pichau: {e}")
 
-    # Delay aleatório
     delay = random.uniform(2, 5)
     print(f"Aguardando {delay:.2f}s...")
     time.sleep(delay)
 
     # 3. Terabyte
     try:
-        print("\n[3/5] Executando Terabyte...")
+        print("\n[3/7] Executando Terabyte...")
         terabyte_data = get_terabyte_prices(query)
         results.extend(terabyte_data)
         print(f"-> {len(terabyte_data)} produtos encontrados.")
     except Exception as e:
         print(f"Erro no scraper Terabyte: {e}")
     
-    # Delay aleatório
     delay = random.uniform(2, 5)
     print(f"Aguardando {delay:.2f}s...")
     time.sleep(delay)
     
     # 4. Mercado Livre
     try:
-        print("\n[4/5] Executando Mercado Livre...")
+        print("\n[4/7] Executando Mercado Livre...")
         ml_data = get_mercadolivre_prices(query)
         results.extend(ml_data)
         print(f"-> {len(ml_data)} produtos encontrados.")
     except Exception as e:
         print(f"Erro no scraper Mercado Livre: {e}")
     
-    # Delay aleatório
     delay = random.uniform(2, 5)
     print(f"Aguardando {delay:.2f}s...")
     time.sleep(delay)
     
     # 5. Amazon
     try:
-        print("\n[5/5] Executando Amazon...")
+        print("\n[5/7] Executando Amazon...")
         amazon_data = get_amazon_prices(query)
         results.extend(amazon_data)
         print(f"-> {len(amazon_data)} produtos encontrados.")
     except Exception as e:
         print(f"Erro no scraper Amazon: {e}")
+    
+    delay = random.uniform(2, 5)
+    print(f"Aguardando {delay:.2f}s...")
+    time.sleep(delay)
+    
+    # 6. Magazine Luiza
+    try:
+        print("\n[6/7] Executando Magazine Luiza...")
+        magalu_data = get_magazineluiza_prices(query)
+        results.extend(magalu_data)
+        print(f"-> {len(magalu_data)} produtos encontrados.")
+    except Exception as e:
+        print(f"Erro no scraper Magazine Luiza: {e}")
+    
+    delay = random.uniform(2, 5)
+    print(f"Aguardando {delay:.2f}s...")
+    time.sleep(delay)
+    
+    # 7. Americanas
+    try:
+        print("\n[7/7] Executando Americanas...")
+        americanas_data = get_americanas_prices(query)
+        results.extend(americanas_data)
+        print(f"-> {len(americanas_data)} produtos encontrados.")
+    except Exception as e:
+        print(f"Erro no scraper Americanas: {e}")
 
     print(f"\n=== Finalizado. Total de produtos coletados: {len(results)} ===")
     

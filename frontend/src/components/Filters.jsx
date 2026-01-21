@@ -3,7 +3,7 @@ import { Store, Cpu, HardDrive, MemoryStick, Zap, Package } from 'lucide-react';
 import './Filters.css';
 
 const Filters = ({ selectedStores, setSelectedStores, selectedCategories, setSelectedCategories }) => {
-    const stores = ['Kabum', 'Pichau', 'Terabyte', 'Mercado Livre', 'Amazon'];
+    const stores = ['Kabum', 'Pichau', 'Terabyte', 'Mercado Livre', 'Amazon', 'Magazine Luiza', 'Americanas'];
     const categories = [
         { name: 'GPU', icon: Package },
         { name: 'CPU', icon: Cpu },
