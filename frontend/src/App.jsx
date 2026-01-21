@@ -3,8 +3,9 @@ import { supabase } from './lib/supabase'
 import ProductCard from './components/ProductCard'
 import HistoryModal from './components/HistoryModal'
 import Filters from './components/Filters'
+import Dashboard from './components/Dashboard'
 import { calculateTrend, isLowestPrice, categorizeProduct, isKit } from './utils/priceAnalytics'
-import { LineChart } from 'lucide-react'
+import { LineChart, BarChart3, Package } from 'lucide-react'
 import './App.css'
 
 function App() {
@@ -12,6 +13,7 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedProductGroup, setSelectedProductGroup] = useState(null)
+  const [activeTab, setActiveTab] = useState('products') // 'products' ou 'dashboard'
 
   // States para Filtros
   const [selectedStores, setSelectedStores] = useState(['Kabum', 'Pichau', 'Terabyte'])
@@ -88,49 +90,73 @@ function App() {
         <h1>PC Price Tracker 🖥️</h1>
         <p>Monitoramento de preços Kabum, Pichau e Terabyte</p>
 
-        <input
-          type="text"
-          placeholder="Buscar produto..."
-          className="search-input"
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-        />
-      </div>
-
-      <div className="app-container">
-
-        <Filters
-          selectedStores={selectedStores}
-          setSelectedStores={setSelectedStores}
-          selectedCategories={selectedCategories}
-          setSelectedCategories={setSelectedCategories}
-        />
-
-        <div className="main-content">
-          {loading ? (
-            <p>Carregando ofertas...</p>
-          ) : (
-            <div className="products-grid">
-              {filteredProducts.length > 0 ? (
-                filteredProducts.map((product) => (
-                  <div key={`${product.store}-${product.product_name}`} style={{ position: 'relative' }}>
-                    <ProductCard product={product} />
-                    <button
-                      className="history-btn"
-                      onClick={() => setSelectedProductGroup({ product, history: product.fullHistory })}
-                      title="Ver Histórico"
-                    >
-                      <LineChart size={20} />
-                    </button>
-                  </div>
-                ))
-              ) : (
-                <p>Nenhum produto encontrado.</p>
-              )}
-            </div>
-          )}
+        {/* Navigation Tabs */}
+        <div className="nav-tabs">
+          <button
+            className={`nav-tab ${activeTab === 'products' ? 'active' : ''}`}
+            onClick={() => setActiveTab('products')}
+          >
+            <Package size={20} />
+            Produtos
+          </button>
+          <button
+            className={`nav-tab ${activeTab === 'dashboard' ? 'active' : ''}`}
+            onClick={() => setActiveTab('dashboard')}
+          >
+            <BarChart3 size={20} />
+            Dashboard
+          </button>
         </div>
+
+        {activeTab === 'products' && (
+          <input
+            type="text"
+            placeholder="Buscar produto..."
+            className="search-input"
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+        )}
       </div>
+
+      {activeTab === 'dashboard' ? (
+        <Dashboard products={processedProducts} />
+      ) : (
+        <div className="app-container">
+
+          <Filters
+            selectedStores={selectedStores}
+            setSelectedStores={setSelectedStores}
+            selectedCategories={selectedCategories}
+            setSelectedCategories={setSelectedCategories}
+          />
+
+          <div className="main-content">
+            {loading ? (
+              <p>Carregando ofertas...</p>
+            ) : (
+              <div className="products-grid">
+                {filteredProducts.length > 0 ? (
+                  filteredProducts.map((product) => (
+                    <div key={`${product.store}-${product.product_name}`} style={{ position: 'relative' }}>
+                      <ProductCard product={product} />
+                      <button
+                        className="history-btn"
+                        onClick={() => setSelectedProductGroup({ product, history: product.fullHistory })}
+                        title="Ver Histórico"
+                      >
+                        <LineChart size={20} />
+                      </button>
+                    </div>
+                  ))
+                ) : (
+                  <p>Nenhum produto encontrado.</p>
+                )}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       {selectedProductGroup && (
         <HistoryModal
