@@ -42,25 +42,30 @@ def get_pichau_prices(query="RTX 4060"):
         page = context.new_page()
         
         try:
-            # Delays mais humanizados
-            time.sleep(2)
-            page.goto(url, wait_until="networkidle", timeout=90000)
+            # Delays humanizados
+            time.sleep(3)
             
-            # Wait for products
-            print("Aguardando carregamento dos produtos...")
-            time.sleep(3)  # Delay adicional para JS carregar
-            
+            # Usar domcontentloaded ao invés de networkidle (mais rápido)
             try:
-                # Tentar diferentes seletores
-                page.wait_for_selector('div[class*="MuiGrid-item"], article, .product-card', timeout=20000)
+                page.goto(url, wait_until="domcontentloaded", timeout=60000)
+            except Exception as goto_err:
+                print(f"Erro no page.goto (tentando load): {goto_err}")
+                page.goto(url, wait_until="load", timeout=60000)
+            
+            print("Aguardando carregamento dos produtos...")
+            time.sleep(5)  # Aumentado para 5s
+            
+            # Aguardar seletores com mais tolerância
+            try:
+                page.wait_for_selector('a[class*="MuiGrid-item"], div[class*="MuiGrid-item"], article', timeout=15000)
             except:
                 print("Timeout aguardando seletores de produto.")
+                # Não retornar, continuar tentando
 
             # Scroll mais humanizado
             page.evaluate("window.scrollTo(0, 800)")
             time.sleep(1)
             page.evaluate("window.scrollTo(0, 1600)")
-            time.sleep(2)
 
             # Get all product link containers which are the cards
             # Based on inspection: a[href*="/"] inside main 

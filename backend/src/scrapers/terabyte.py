@@ -41,18 +41,25 @@ def get_terabyte_prices(query="RTX 4060"):
         page = context.new_page()
         
         try:
-            # Delays mais humanizados
-            time.sleep(2)
-            page.goto(url, wait_until="networkidle", timeout=90000)
+            # Delays humanizados
+            time.sleep(3)
+            
+            # Usar domcontentloaded para evitar timeout
+            try:
+                page.goto(url, wait_until="domcontentloaded", timeout=60000)
+            except Exception as goto_err:
+                print(f"Erro no page.goto (tentando load): {goto_err}")
+                page.goto(url, wait_until="load", timeout=60000)
             
             print("Aguardando carregamento dos produtos...")
-            time.sleep(3)  # Delay adicional para JS carregar
+            time.sleep(5)
             
+            # Aguardar com mais tolerância
             try:
-                # Seletor baseado na inspeção
-                page.wait_for_selector('.product-item', timeout=20000)
+                page.wait_for_selector('div.commerce_columns_item_inner', timeout=15000)
             except:
                 print("Timeout aguardando seletores de produto.")
+                # Continuar tentando
 
             # Scroll mais humanizado
             page.evaluate("window.scrollTo(0, 800)")
