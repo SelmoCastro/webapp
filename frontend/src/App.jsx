@@ -16,8 +16,8 @@ function App() {
   const [activeTab, setActiveTab] = useState('products') // 'products' ou 'dashboard'
 
   // States para Filtros
-  const [selectedStores, setSelectedStores] = useState(['Kabum', 'Pichau', 'Terabyte'])
-  const [selectedCategories, setSelectedCategories] = useState(['GPU', 'CPU', 'RAM', 'Motherboard', 'Storage', 'PSU', 'Outros']) // Inicia com todos marcados? Ou vazio significa todos? Vamos iniciar com todos para facilitar.
+  const [selectedStores, setSelectedStores] = useState(['Kabum', 'Pichau', 'Terabyte', 'Mercado Livre'])
+  const [selectedCategories, setSelectedCategories] = useState(['GPU', 'CPU', 'RAM', 'Motherboard', 'Storage', 'PSU', 'Outros'])
 
   useEffect(() => {
     fetchProducts()

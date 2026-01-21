@@ -72,6 +72,12 @@
   background: linear-gradient(135deg, #3f9b0b 0%, #4eb80d 100%);
 }
 
+.store-tag.mercado-livre,
+.store-tag.mercadolivre {
+  background: linear-gradient(135deg, #ffe600 0%, #ffd000 100%);
+  color: #333;
+}
+
 .card-body {
   flex-grow: 1;
 }
