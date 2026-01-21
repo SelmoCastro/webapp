@@ -16,7 +16,7 @@ function App() {
   const [activeTab, setActiveTab] = useState('products') // 'products' ou 'dashboard'
 
   // States para Filtros
-  const [selectedStores, setSelectedStores] = useState(['Kabum', 'Pichau', 'Terabyte', 'Mercado Livre'])
+  const [selectedStores, setSelectedStores] = useState(['Kabum', 'Pichau', 'Terabyte', 'Mercado Livre', 'Amazon'])
   const [selectedCategories, setSelectedCategories] = useState(['GPU', 'CPU', 'RAM', 'Motherboard', 'Storage', 'PSU', 'Outros'])
 
   useEffect(() => {
