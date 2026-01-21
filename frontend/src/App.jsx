@@ -80,8 +80,9 @@ function App() {
     const matchesSearch = item.product_name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStore = selectedStores.length === 0 || selectedStores.includes(item.store);
     const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(item.computedCategory);
+    const hasValidPrice = item.price > 0; // Filtrar produtos sem preço
 
-    return matchesSearch && matchesStore && matchesCategory;
+    return matchesSearch && matchesStore && matchesCategory && hasValidPrice;
   })
 
   return (

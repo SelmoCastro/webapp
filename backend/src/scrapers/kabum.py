@@ -75,6 +75,11 @@ def get_kabum_prices(query="RTX 4060"):
                         if href:
                             item_url = "https://www.kabum.com.br" + href
 
+                    
+                    # Só adicionar produtos com preço válido
+                    if price_float <= 0:
+                        continue
+
                     products.append({
                         "product_name": title,
                         "price": price_float,
