@@ -1,65 +1,118 @@
 .product-card {
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-  padding: 16px;
+  position: relative;
+  background: linear-gradient(135deg, rgba(26, 26, 46, 0.9) 0%, rgba(22, 33, 62, 0.9) 100%);
+  backdrop-filter: blur(20px);
+  border-radius: 20px;
+  border: 1px solid rgba(148, 163, 184, 0.1);
+  padding: 1.5rem;
   display: flex;
   flex-direction: column;
-  transition: transform 0.2s;
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.product-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, #6366f1 0%, #8b5cf6 100%);
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
 .product-card:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  transform: translateY(-8px);
+  box-shadow: 0 12px 40px rgba(99, 102, 241, 0.3),
+    0 0 0 1px rgba(99, 102, 241, 0.2);
+}
+
+.product-card:hover::before {
+  opacity: 1;
 }
 
 .card-header {
-  margin-bottom: 12px;
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
 }
 
 .store-tag {
-  font-size: 0.8rem;
-  font-weight: bold;
-  padding: 4px 8px;
-  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  padding: 6px 12px;
+  border-radius: 8px;
   color: white;
   text-transform: uppercase;
+  letter-spacing: 0.05em;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
 }
 
-.store-tag.kabum { background-color: #ff6500; }
-.store-tag.pichau { background-color: #cf2e2e; } /* Pichau uses red/white/blue usually, but red for tagging is fine */
-.store-tag.terabyte { background-color: #3f9b0b; }
+.store-tag.kabum {
+  background: linear-gradient(135deg, #ff6500 0%, #ff8533 100%);
+}
+
+.store-tag.pichau {
+  background: linear-gradient(135deg, #cf2e2e 0%, #e64545 100%);
+}
+
+.store-tag.terabyte {
+  background: linear-gradient(135deg, #3f9b0b 0%, #4eb80d 100%);
+}
+
+.card-body {
+  flex-grow: 1;
+}
 
 .card-body h3 {
-  font-size: 1rem;
-  margin: 0 0 12px 0;
-  line-height: 1.4;
-  height: 2.8em; /* Limit to 2 lines */
-  overflow: hidden;
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0 0 1rem 0;
+  line-height: 1.5;
+  min-height: 3em;
+  color: #f8fafc;
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .price-container {
   display: flex;
   flex-direction: column;
+  gap: 0.5rem;
+  padding: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 12px;
+  border: 1px solid rgba(148, 163, 184, 0.05);
 }
 
 .price-label {
-  font-size: 0.8rem;
-  color: #666;
+  font-size: 0.75rem;
+  color: #94a3b8;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-weight: 600;
 }
 
 .price-value {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #333;
+  font-size: 1.75rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.02em;
 }
 
 .card-footer {
-  margin-top: auto;
-  padding-top: 16px;
+  margin-top: 1.25rem;
+  padding-top: 1rem;
+  border-top: 1px solid rgba(148, 163, 184, 0.1);
 }
 
 .buy-button {
@@ -67,15 +120,46 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  background-color: #007bff;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
   color: white;
   text-decoration: none;
-  padding: 10px;
-  border-radius: 4px;
-  font-weight: 500;
-  transition: background-color 0.2s;
+  padding: 12px 20px;
+  border-radius: 12px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.buy-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+  transition: left 0.5s;
 }
 
 .buy-button:hover {
-  background-color: #0056b3;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+}
+
+.buy-button:hover::before {
+  left: 100%;
+}
+
+.buy-button:active {
+  transform: translateY(0);
+}
+
+/* Fallback for browsers that don't support backdrop-filter */
+@supports not (backdrop-filter: blur(20px)) {
+  .product-card {
+    background: rgba(26, 26, 46, 1);
+  }
 }
