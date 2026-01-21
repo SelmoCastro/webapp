@@ -1,0 +1,150 @@
+/* Sidebar Header */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid rgba(99, 102, 241, 0.3);
+}
+
+.sidebar-header h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin: 0;
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.sidebar-header svg {
+    color: var(--accent-primary);
+}
+
+/* Filter Groups */
+.filter-group {
+    margin-bottom: 1.5rem;
+}
+
+.filter-group h3 {
+    font-size: 0.75rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+}
+
+.filter-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+/* Custom Toggle Switch */
+.filter-toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    padding: 8px 12px;
+    border-radius: 10px;
+    transition: background-color 0.2s;
+}
+
+.filter-toggle:hover {
+    background: rgba(99, 102, 241, 0.05);
+}
+
+.filter-toggle input[type="checkbox"] {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* Toggle Slider (Switch) */
+.toggle-slider {
+    position: relative;
+    width: 42px;
+    height: 24px;
+    background: rgba(148, 163, 184, 0.2);
+    border-radius: 12px;
+    transition: background-color 0.3s;
+    flex-shrink: 0;
+}
+
+.toggle-slider::before {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    background: white;
+    border-radius: 50%;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Checked State */
+.filter-toggle input:checked~.toggle-slider {
+    background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+}
+
+.filter-toggle input:checked~.toggle-slider::before {
+    transform: translateX(18px);
+}
+
+/* Category Icon */
+.category-icon {
+    color: var(--text-secondary);
+    flex-shrink: 0;
+    transition: color 0.2s;
+}
+
+.filter-toggle input:checked~.category-icon {
+    color: var(--accent-primary);
+}
+
+/* Toggle Label */
+.toggle-label {
+    font-size: 0.95rem;
+    color: var(--text-secondary);
+    font-weight: 500;
+    transition: color 0.2s;
+}
+
+.filter-toggle input:checked~.toggle-label {
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+/* Active indicator animation */
+.filter-toggle input:checked~.toggle-slider {
+    animation: togglePulse 0.4s ease-out;
+}
+
+@keyframes togglePulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(99, 102, 241, 0.4);
+    }
+
+    100% {
+        box-shadow: 0 0 0 8px rgba(99, 102, 241, 0);
+    }
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .filter-toggle {
+        padding: 10px 12px;
+    }
+
+    .toggle-label {
+        font-size: 1rem;
+    }
+}

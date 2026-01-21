@@ -1,8 +1,18 @@
 import React from 'react';
+import { Store, Cpu, HardDrive, MemoryStick, Zap, Package } from 'lucide-react';
+import './Filters.css';
 
 const Filters = ({ selectedStores, setSelectedStores, selectedCategories, setSelectedCategories }) => {
     const stores = ['Kabum', 'Pichau', 'Terabyte'];
-    const categories = ['GPU', 'CPU', 'RAM', 'Motherboard', 'Storage', 'PSU', 'Outros'];
+    const categories = [
+        { name: 'GPU', icon: Package },
+        { name: 'CPU', icon: Cpu },
+        { name: 'RAM', icon: MemoryStick },
+        { name: 'Motherboard', icon: HardDrive },
+        { name: 'Storage', icon: HardDrive },
+        { name: 'PSU', icon: Zap },
+        { name: 'Outros', icon: Package }
+    ];
 
     const toggleStore = (store) => {
         if (selectedStores.includes(store)) {
@@ -22,32 +32,44 @@ const Filters = ({ selectedStores, setSelectedStores, selectedCategories, setSel
 
     return (
         <aside className="filters-sidebar">
+            <div className="sidebar-header">
+                <Store size={20} />
+                <h2>Filtros</h2>
+            </div>
+
             <div className="filter-group">
                 <h3>Lojas</h3>
-                {stores.map(store => (
-                    <label key={store} className="filter-option">
-                        <input
-                            type="checkbox"
-                            checked={selectedStores.includes(store)}
-                            onChange={() => toggleStore(store)}
-                        />
-                        {store}
-                    </label>
-                ))}
+                <div className="filter-options">
+                    {stores.map(store => (
+                        <label key={store} className="filter-toggle">
+                            <input
+                                type="checkbox"
+                                checked={selectedStores.includes(store)}
+                                onChange={() => toggleStore(store)}
+                            />
+                            <span className="toggle-slider"></span>
+                            <span className="toggle-label">{store}</span>
+                        </label>
+                    ))}
+                </div>
             </div>
 
             <div className="filter-group">
                 <h3>Categorias</h3>
-                {categories.map(cat => (
-                    <label key={cat} className="filter-option">
-                        <input
-                            type="checkbox"
-                            checked={selectedCategories.includes(cat)}
-                            onChange={() => toggleCategory(cat)}
-                        />
-                        {cat}
-                    </label>
-                ))}
+                <div className="filter-options">
+                    {categories.map(({ name, icon: Icon }) => (
+                        <label key={name} className="filter-toggle">
+                            <input
+                                type="checkbox"
+                                checked={selectedCategories.includes(name)}
+                                onChange={() => toggleCategory(name)}
+                            />
+                            <span className="toggle-slider"></span>
+                            <Icon size={16} className="category-icon" />
+                            <span className="toggle-label">{name}</span>
+                        </label>
+                    ))}
+                </div>
             </div>
         </aside>
     );
