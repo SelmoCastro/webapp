@@ -48,8 +48,9 @@ function App() {
     const groups = {}
 
     rawData.forEach(item => {
-      // Criar chave única baseada em nome e loja
-      const key = `${item.store}-${item.product_name}`
+      // Usar normalized_name se disponível, senão fallback para product_name
+      const productKey = item.normalized_name || item.product_name
+      const key = `${item.store}-${productKey}`
 
       if (!groups[key]) {
         groups[key] = {
@@ -70,7 +71,8 @@ function App() {
         fullHistory: history,
         trend: calculateTrend(currentPrice, history),
         isLowestPrice: isLowestPrice(currentPrice, history),
-        computedCategory: categorizeProduct(g.product.product_name)
+        computedCategory: categorizeProduct(g.product.product_name),
+        isKit: isKit(g.product.product_name)
       }
     })
   }, [rawData])
