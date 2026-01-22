@@ -4,4 +4,4 @@ fake-useragent
 playwright
 supabase
 python-dotenv
-
+unidecode
