@@ -6,8 +6,6 @@ import os
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 from product_filter import is_valid_pc_product
 
-from fake_useragent import UserAgent
-
 def get_terabyte_prices(query="RTX 4060"):
     
     url = f"https://www.terabyteshop.com.br/busca?str={query}"
