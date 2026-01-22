@@ -1,6 +1,10 @@
 from playwright.sync_api import sync_playwright
 import json
 import time
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+from product_filter import is_valid_pc_product
 
 from fake_useragent import UserAgent
 

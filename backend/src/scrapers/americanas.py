@@ -1,6 +1,10 @@
 from playwright.sync_api import sync_playwright
 import json
 import time
+import sys
+import os
+sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
+from product_filter import is_valid_pc_product
 
 def get_americanas_prices(query="RTX 4060"):
     
@@ -66,6 +70,10 @@ def get_americanas_prices(query="RTX 4060"):
                         continue
                     
                     title = title_locator.first.inner_text().strip()
+                    
+                    # Filtrar produtos não relacionados a PC
+                    if not is_valid_pc_product(title):
+                        continue
 
                     # Preço (discountPrice = preço à vista/PIX)
                     price_locator = card.locator('span[class*="ProductCard_discountPrice"]')
