@@ -15,9 +15,9 @@ function App() {
   const [selectedProductGroup, setSelectedProductGroup] = useState(null)
   const [activeTab, setActiveTab] = useState('products') // 'products' ou 'dashboard'
 
-  // States para Filtros
-  const [selectedStores, setSelectedStores] = useState(['Kabum', 'Pichau', 'Terabyte', 'Mercado Livre', 'Amazon', 'Magazine Luiza', 'Americanas'])
-  const [selectedCategories, setSelectedCategories] = useState(['GPU', 'CPU', 'RAM', 'Motherboard', 'Storage', 'PSU', 'Outros'])
+  // States para Filtros (iniciar vazio = mostrar tudo)
+  const [selectedStores, setSelectedStores] = useState([])
+  const [selectedCategories, setSelectedCategories] = useState([])
 
   useEffect(() => {
     fetchProducts()
