@@ -78,10 +78,16 @@ function App() {
   }, [rawData])
 
 
+
   const filteredProducts = processedProducts.filter(item => {
     const matchesSearch = item.product_name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesStore = selectedStores.length === 0 || selectedStores.includes(item.store);
-    const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(item.computedCategory);
+
+    // Se nenhuma loja selecionada, mostrar TODAS. Senão, filtrar apenas as selecionadas
+    const matchesStore = selectedStores.length === 0 ? true : selectedStores.includes(item.store);
+
+    // Se nenhuma categoria selecionada, mostrar TODAS. Senão, filtrar apenas as selecionadas
+    const matchesCategory = selectedCategories.length === 0 ? true : selectedCategories.includes(item.computedCategory);
+
     const hasValidPrice = item.price > 0; // Filtrar produtos sem preço
 
     return matchesSearch && matchesStore && matchesCategory && hasValidPrice;
