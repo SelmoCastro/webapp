@@ -124,9 +124,9 @@ def get_amazon_prices(query="RTX 4060"):
                         href = link_locator.first.get_attribute('href')
                         if href:
                             if href.startswith('http'):
-                                item_url = href.split('?')[0]  # Remove tracking
+                                item_url = href  # Manter URL completa
                             else:
-                                item_url = "https://www.amazon.com.br" + href.split('?')[0]
+                                item_url = "https://www.amazon.com.br" + href  # Manter query params
 
                     products.append({
                         "product_name": title,
