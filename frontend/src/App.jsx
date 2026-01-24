@@ -79,19 +79,22 @@ function App() {
 
 
 
-  const filteredProducts = processedProducts.filter(item => {
-    const matchesSearch = item.product_name.toLowerCase().includes(searchTerm.toLowerCase());
+  const filteredProducts = useMemo(() => {
+    return processedProducts.filter(item => {
+      const pName = item.product_name ? item.product_name.toLowerCase() : '';
+      const matchesSearch = pName.includes(searchTerm.toLowerCase());
 
-    // Se nenhuma loja selecionada, mostrar TODAS. Senão, filtrar apenas as selecionadas
-    const matchesStore = selectedStores.length === 0 ? true : selectedStores.includes(item.store);
+      // Se nenhuma loja selecionada, mostrar TODAS. Senão, filtrar apenas as selecionadas
+      const matchesStore = selectedStores.length === 0 ? true : selectedStores.includes(item.store);
 
-    // Se nenhuma categoria selecionada, mostrar TODAS. Senão, filtrar apenas as selecionadas
-    const matchesCategory = selectedCategories.length === 0 ? true : selectedCategories.includes(item.computedCategory);
+      // Se nenhuma categoria selecionada, mostrar TODAS. Senão, filtrar apenas as selecionadas
+      const matchesCategory = selectedCategories.length === 0 ? true : selectedCategories.includes(item.computedCategory);
 
-    const hasValidPrice = item.price > 0; // Filtrar produtos sem preço
+      const hasValidPrice = item.price > 0; // Filtrar produtos sem preço
 
-    return matchesSearch && matchesStore && matchesCategory && hasValidPrice;
-  })
+      return matchesSearch && matchesStore && matchesCategory && hasValidPrice;
+    })
+  }, [processedProducts, searchTerm, selectedStores, selectedCategories])
 
   return (
     <>

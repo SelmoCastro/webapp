@@ -35,6 +35,7 @@ export function isLowestPrice(currentPrice, history) {
 }
 
 export function categorizeProduct(productName) {
+    if (!productName) return 'Outros';
     const name = productName.toLowerCase();
 
     // Prioridade para Placa-mãe (Para não cair em RAM DDR4)
@@ -50,6 +51,7 @@ export function categorizeProduct(productName) {
 }
 
 export function isKit(productName) {
+    if (!productName) return false;
     const name = productName.toLowerCase();
     // Procura por padrões como: 2x, 2 x, 4x, kit
     if (name.includes('kit') || name.includes('2x') || name.includes('2 x') || name.includes('4x') || name.includes('4 x')) return true;
