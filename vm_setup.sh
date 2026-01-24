@@ -17,21 +17,17 @@ sudo apt-get install -y python3-pip python3-venv git htop cron
 # Determinar diretório onde o script está rodando
 SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 echo -e "${BLUE}Script executado em: $SCRIPT_DIR${NC}"
+echo "Conteúdo de $SCRIPT_DIR:"
+ls -F "$SCRIPT_DIR"
 
 # Se o script está dentro de pc_price_tracker, definimos o backend relativo a ele
 if [ -d "$SCRIPT_DIR/backend" ]; then
     BACKEND_DIR="$SCRIPT_DIR/backend"
     echo -e "${GREEN}Diretório backend detectado em: $BACKEND_DIR${NC}"
 else
-    # Fallback: Tentar achar clonando se não estiver rodando de dentro do repo
-    echo -e "${RED}Não parece que estamos dentro da pasta do projeto.${NC}"
-    echo -e "Tentando clonar em \$HOME/webapp..."
-    
-    REPO_DIR="$HOME/webapp"
-    if [ ! -d "$REPO_DIR" ]; then
-        git clone https://github.com/SelmoCastro/webapp.git "$REPO_DIR"
-    fi
-    BACKEND_DIR="$REPO_DIR/pc_price_tracker/backend"
+    echo -e "${RED}ERRO CRÍTICO: Pasta 'backend' não encontrada dentro de $SCRIPT_DIR${NC}"
+    echo "O arquivo vm_setup.sh precisa estar ao lado da pasta 'backend'."
+    exit 1
 fi
 
 # 3. Setup do Ambiente Python
@@ -41,12 +37,18 @@ cd "$BACKEND_DIR"
 if [ ! -d "venv" ]; then
     echo "Criando venv..."
     python3 -m venv venv
-    # Ajuste de permissão caso esteja rodando como root mas queira usar depois (opcional, mas boa prática em VM suja)
 fi
 
 source venv/bin/activate
+# Forçar upgrade pip e garantir que requirements existam
+if [ ! -f "requirements.txt" ]; then
+    echo -e "${RED}ERRO: requirements.txt não encontrado em $(pwd)${NC}"
+    ls -la
+    exit 1
+fi
+
 pip install --upgrade pip
-pip install -r requirements.txt || { echo -e "${RED}Falha ao instalar requirements. Verifique se o arquivo existe.${NC}"; exit 1; }
+pip install -r requirements.txt
 
 # 4. Instalação do Playwright
 echo -e "${GREEN}[4/6] Instalando Playwright e Browsers...${NC}"
