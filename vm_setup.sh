@@ -14,40 +14,54 @@ sudo apt-get update && sudo apt-get upgrade -y
 sudo apt-get install -y python3-pip python3-venv git htop cron
 
 # 2. Clone do Repositório (Se não existir) ou Pull
-REPO_DIR="$HOME/webapp"
-REPO_URL="https://github.com/SelmoCastro/webapp.git"
+# Determinar diretório onde o script está rodando
+SCRIPT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+echo -e "${BLUE}Script executado em: $SCRIPT_DIR${NC}"
 
-if [ -d "$REPO_DIR" ]; then
-    echo -e "${GREEN}[2/6] Atualizando repositório existente...${NC}"
-    cd "$REPO_DIR"
-    git pull
+# Se o script está dentro de pc_price_tracker, definimos o backend relativo a ele
+if [ -d "$SCRIPT_DIR/backend" ]; then
+    BACKEND_DIR="$SCRIPT_DIR/backend"
+    echo -e "${GREEN}Diretório backend detectado em: $BACKEND_DIR${NC}"
 else
-    echo -e "${GREEN}[2/6] Clonando repositório...${NC}"
-    git clone "$REPO_URL" "$REPO_DIR"
-    cd "$REPO_DIR"
+    # Fallback: Tentar achar clonando se não estiver rodando de dentro do repo
+    echo -e "${RED}Não parece que estamos dentro da pasta do projeto.${NC}"
+    echo -e "Tentando clonar em \$HOME/webapp..."
+    
+    REPO_DIR="$HOME/webapp"
+    if [ ! -d "$REPO_DIR" ]; then
+        git clone https://github.com/SelmoCastro/webapp.git "$REPO_DIR"
+    fi
+    BACKEND_DIR="$REPO_DIR/pc_price_tracker/backend"
 fi
 
 # 3. Setup do Ambiente Python
-echo -e "${GREEN}[3/6] Configurando ambiente virtual Python...${NC}"
-BACKEND_DIR="$REPO_DIR/pc_price_tracker/backend"
+echo -e "${GREEN}[3/6] Configurando ambiente virtual Python em $BACKEND_DIR...${NC}"
 cd "$BACKEND_DIR"
 
 if [ ! -d "venv" ]; then
+    echo "Criando venv..."
     python3 -m venv venv
+    # Ajuste de permissão caso esteja rodando como root mas queira usar depois (opcional, mas boa prática em VM suja)
 fi
 
 source venv/bin/activate
 pip install --upgrade pip
-pip install -r requirements.txt
+pip install -r requirements.txt || { echo -e "${RED}Falha ao instalar requirements. Verifique se o arquivo existe.${NC}"; exit 1; }
 
 # 4. Instalação do Playwright
 echo -e "${GREEN}[4/6] Instalando Playwright e Browsers...${NC}"
 playwright install chromium
-sudo playwright install-deps chromium
+# Se for root, install-deps não precisa de sudo, mas se não for, precisa
+if [ "$EUID" -eq 0 ]; then
+  playwright install-deps chromium
+else
+  sudo playwright install-deps chromium
+fi
 
 # 5. Criar script de execução para o Cron
 echo -e "${GREEN}[5/6] Criando script wrapper para o Cron...${NC}"
-RUN_SCRIPT="$HOME/run_scraper.sh"
+# Salvar o run_scraper.sh no mesmo nível do vm_setup.sh para facilitar
+RUN_SCRIPT="$SCRIPT_DIR/run_scraper.sh"
 cat > "$RUN_SCRIPT" << EOL
 #!/bin/bash
 cd "$BACKEND_DIR"
